@@ -1,32 +1,28 @@
-# Strudel (MYTEK Lab integration)
+# Strudel, as served on mytekdev.com
 
-Platform wrapper for [Strudel](https://strudel.cc) — live-coding music in the browser
-(TidalCycles patterns in JavaScript). Upstream source: <https://codeberg.org/uzu/strudel>
-(AGPL-3.0). This repo does **not** contain Strudel's source; it vendors the prebuilt,
-self-contained REPL bundle plus our integration assets.
+[Strudel](https://strudel.cc) is live coding for music in the browser, a JavaScript
+take on TidalCycles patterns, by Felix Roos, Alex McLean and contributors. It is
+licensed under the GNU Affero General Public License v3 or later, and so is
+everything here (see LICENSE).
 
-## Contents
+This repository holds the copy that students open on mytekdev.com. Nothing in it is
+modified:
 
-- `strudel-repl.js` — the prebuilt `@strudel/repl` web-component bundle (defines
-  `<strudel-editor>`). ~2.2 MB, self-contained (no build step on our side).
-- `icon.png` — app icon.
+- `strudel-repl.js` is `dist/index.js` from the npm package
+  [@strudel/repl 1.3.0](https://www.npmjs.com/package/@strudel/repl/v/1.3.0),
+  byte for byte. Its source is upstream commit
+  [f610965f43](https://codeberg.org/uzu/strudel/src/commit/f610965f4332837febe45743105da170e8b331ed)
+  (2026-01-17), tagged `@strudel/repl@1.3.0`.
+- `icon.png` is upstream's `website/public/icon.png` from the same commit.
 
-## Not in this repo (injected by the platform at runtime)
-
-- `platform.html` — the iframe wrapper (gitignored). Adds the Play/Stop bar, the
-  instant code preview, the Examples dropdown, and loads `strudel-repl.js`.
-- `platform-adapters/strudel-adapter.js` — save/load + transport + examples wiring.
-
-## Updating the bundle
-
-The bundle is the published `@strudel/repl` package. To refresh:
+## Checking it
 
 ```
-curl -L https://unpkg.com/@strudel/repl/dist/index.js -o strudel-repl.js
+npm pack @strudel/repl@1.3.0
+tar -xzf strudel-repl-1.3.0.tgz
+cmp package/dist/index.js strudel-repl.js
 ```
 
-Then test in the `--dev` worktree before deploying to `apps/strudel/`.
-
-## License
-
-Strudel is AGPL-3.0. We self-host an unmodified copy of the published bundle.
+The page that loads the editor and the script that connects it to mytekdev.com
+(Play and Stop buttons, the examples menu, saving) are separate programs that use
+the `<strudel-editor>` element from outside. They are not part of this repository.
